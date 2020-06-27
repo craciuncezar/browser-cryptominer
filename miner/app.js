@@ -1,4 +1,4 @@
-var server = "ws://localhost:8181";
+var server = "ws://86.124.241.21:8181";
 
 var job = null; // remember last job we got from the server
 var workers = []; // keep track of our workers
