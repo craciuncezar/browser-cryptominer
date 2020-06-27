@@ -1,4 +1,4 @@
-var server = "ws://f044e8b6aac9.ngrok.io";
+var server = "wss://f044e8b6aac9.ngrok.io";
 
 var job = null; // remember last job we got from the server
 var workers = []; // keep track of our workers
