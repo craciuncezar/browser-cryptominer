@@ -1,6 +1,10 @@
 let isCurrentlyMining = false;
 let intervalId;
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("startb").addEventListener("click", start);
+});
+
 function start() {
   let button = document.getElementById("startb");
   isCurrentlyMining = !isCurrentlyMining;

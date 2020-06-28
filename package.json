@@ -4,12 +4,15 @@
   "description": "Client solution for cryptomining monero inside the browser",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp obfuscateJS"
   },
   "author": "Craciun Cezar",
   "license": "ISC",
   "devDependencies": {
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-javascript-obfuscator": "^1.1.6",
+    "vinyl-sourcemaps-apply": "^0.2.1"
   }
 }
