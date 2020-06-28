@@ -61,6 +61,7 @@ function addText(obj) {
   let slider = document.getElementById("throttleMiner");
   let output = document.getElementById("minerPower");
 
+  if (!slider || !output) return;
   output.innerHTML = "Miner power:" + slider.value;
 
   throttleMiner = 100 - slider.value;
