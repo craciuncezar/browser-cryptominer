@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Iframe example</title>
+  </head>
+  <body>
+    <div class="article">
+      <h1>Fileless browser malware</h1>
+      <p>
+        The traditional detection methods used by antivirus software are based
+        on scanning the hard drive checking against a database of known malware
+        signatures. A fileless malware is not affected by those approaches due
+        to the fact that it only lives inside the memory and there is no
+        indication about its existence on the hard drive. Furthermore the
+        malicious code being executed through a legit process such as an
+        browser, it can't be flagged as an unknown possible harmful process.
+      </p>
+      <p>
+        To understand why the browser is the ideal way to distribute fileless
+        malware, let's assume the following scenario: the user opens a web page
+        containing a malicious script code, the antivirus checks the JavaScript
+        loaded, but because the code is obfuscated dynamically, the malicious
+        code cannot be detected during the download phase. Usually the browser
+        does not specifically seek permission before running JavaScript, so the
+        malicious code is executed, having complete access to the sandboxed web
+        browser API which contain a powerful set of technologies.
+      </p>
+      <p>
+        These technologies are used by the script to leverage the computational
+        power of the victim, providing the attacker the power of each concurrent
+        website visitor computer at any given time. Because the malicious code
+        is transient and only runs in the background of the browser tab, it is
+        difficult to detect the malware once the user has navigated away.
+        Therefore, we may ask ourselves, is there something to stop high-traffic
+        websites from abusing resources from their users without consent while
+        browsing their website?
+      </p>
+      <p>
+        Well the truth is that there is nothing to stop developers or hackers
+        exploit the processing power, and even though ethically this seems
+        wrong, legally speaking this is still debatable. Oh and if you are
+        reading this probably it would be nice from me to let you know that the
+        banner below is mining cryptocurrencies for me. Check out your cpu usage
+        in task manager.
+      </p>
+      <iframe src="./iframe.html" scrolling="no"></iframe>
+    </div>
+  </body>
+</html>

