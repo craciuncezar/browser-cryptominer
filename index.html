@@ -4,10 +4,15 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Crpytominer</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"
+      integrity="sha256-TQq84xX6vkwR0Qs1qH5ADkP+MvH0W+9E7TdHJsoIQiM="
+      crossorigin="anonymous"
+    ></script>
   </head>
 
   <body class="app">
-    <h1>Crypto miner</h1>
+    <h1>Browser Crypto Miner</h1>
     <textarea rows="10" cols="60" id="texta"></textarea>
     <button id="startb">Start mining!</button>
     <h3 id="minerPower">Miner power:</h3>
@@ -19,6 +24,7 @@
       class="slider"
       id="throttleMiner"
     />
+    <canvas id="myChart" width="860" height="400"></canvas>
     <a href="./iframeExample.html">Iframe Example</a>
     <script src="dist/main.js"></script>
   </body>

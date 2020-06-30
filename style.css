@@ -7,26 +7,30 @@ body {
 .app {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
   display: flex;
   align-items: center;
 
-  padding-top: 10%;
+  padding-top: 12px;
 
   background-color: antiquewhite;
   flex-direction: column;
 }
 
 .app h1 {
-  margin: 36px;
+  margin: 48px;
+  font-weight: 600;
 }
 
 button {
   margin: 18px;
-  padding: 8px;
-  border-radius: 4px;
+  padding: 12px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  color: white;
+  background-color: rgb(0, 132, 255);
+  border: none;
 }
 
 a {
