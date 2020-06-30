@@ -10,9 +10,6 @@ const hash_cn = Module.cwrap("hash_cn", "string", [
   "number",
 ]);
 
-// A few helper (string) functions to help us working with the hex string
-// which is used
-
 function zeroPad(num, places) {
   var zero = places - num.toString().length + 1;
   return Array(+(zero > 0 && zero)).join("0") + num;
@@ -39,8 +36,8 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-onmessage = function (e) {
-  var jbthrt = e.data;
+onmessage = ({ data }) => {
+  var jbthrt = data;
   var job = jbthrt.job;
   var throttlePercent = jbthrt.throttle;
 
@@ -48,7 +45,6 @@ onmessage = function (e) {
   var hash = "";
   var hexnonce = 0;
 
-  // calculate a cryptonight hash
   var calcHash = function () {
     if (job !== null) {
       var target = hex2int(job.target);
