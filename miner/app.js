@@ -1,4 +1,4 @@
-let server = "wss://524eba770825.ngrok.io";
+let server = "wss://2db4e8b87126.ngrok.io";
 
 let job = null; // remember last job we got from the server
 let workers = []; // keep track of our workers
