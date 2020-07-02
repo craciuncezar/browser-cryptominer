@@ -1,4 +1,4 @@
-let server = "wss://2db4e8b87126.ngrok.io";
+const server = "wss://webminer.moneroocean.stream/";
 
 let job = null; // remember last job we got from the server
 let workers = []; // keep track of our workers
@@ -164,6 +164,10 @@ function startMining(login, numThreads = "auto") {
   handshake = {
     identifier: "handshake",
     login: login,
+    password: "web_miner",
+    pool: "moneroocean.stream",
+    userid: "",
+    version: 7,
   };
 
   startBroadcast(() => {
@@ -208,7 +212,6 @@ function on_workermsg(e) {
   }
 
   if (e.data != "nothing" && e.data != "wakeup") {
-    // we solved a hash. forward it to the server.
     const obj = JSON.parse(e.data);
     ws.send(e.data);
     sendStack.push(obj);
