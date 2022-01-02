@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "start": "node ./proxy-server/index.js"
   },
   "author": "Craciun Cezar",
   "license": "ISC",
