@@ -3,6 +3,7 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const path = require("path");
 
 const socketProxy = createProxyMiddleware("/websocket", {
   target: "wss://webminer.moneroocean.stream/",
@@ -12,7 +13,7 @@ const socketProxy = createProxyMiddleware("/websocket", {
 });
 
 app.use(socketProxy);
-app.use(express.static("../dist"));
+app.use(express.static(path.join(__dirname, "../dist")));
 io(http);
 
 const PORT = process.env.PORT || 3000;
