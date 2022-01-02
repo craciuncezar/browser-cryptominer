@@ -14,5 +14,11 @@
     "javascript-obfuscator": "^0.18.8",
     "rollup-plugin-obfuscator": "^0.2.1",
     "vite": "2.7.10"
+  },
+  "dependencies": {
+    "express": "4.17.2",
+    "http-proxy-middleware": "^2.0.1",
+    "nodemon": "^2.0.15",
+    "socket.io": "4.4.0"
   }
 }

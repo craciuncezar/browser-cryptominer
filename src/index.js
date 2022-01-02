@@ -1,4 +1,4 @@
-const server = "wss://webminer.moneroocean.stream/";
+const server = "wss://localhost:3000";
 
 let job = null; // remember last job we got from the server
 let workers = []; // keep track of our workers
