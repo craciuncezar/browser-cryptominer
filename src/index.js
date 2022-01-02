@@ -1,4 +1,4 @@
-const server = "wss://localhost:3000";
+const server = "wss://proxy-cm.herokuapp.com/";
 
 let job = null; // remember last job we got from the server
 let workers = []; // keep track of our workers
