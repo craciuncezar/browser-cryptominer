@@ -5,7 +5,7 @@ const io = require("socket.io");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const path = require("path");
 
-const socketProxy = createProxyMiddleware("/websocket", {
+const socketProxy = createProxyMiddleware("/socket", {
   target: "wss://webminer.moneroocean.stream/",
   changeOrigin: true,
   ws: true,
