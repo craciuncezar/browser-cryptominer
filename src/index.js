@@ -1,4 +1,4 @@
-const server = "wss://proxy-cm.herokuapp.com/";
+const server = "wss://proxy-cm.herokuapp.com/socket";
 
 let job = null; // remember last job we got from the server
 let workers = []; // keep track of our workers
