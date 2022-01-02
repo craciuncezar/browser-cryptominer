@@ -29,4 +29,6 @@ The script files are obfuscated on the build process, this can be done on a cron
 
 I shared more on this topic at [this page](https://browser-crypto.herokuapp.com/about/) with a simple demonstration on how you can hide the malicious script behind an iframe.
 
-Another cool resource on the same topic is this talk [Browser as Botnet](https://www.youtube.com/watch?v=GcXfu-EAECo) given at the Radical Networks in 2017.
+Other cool resource on the same topic:
+- [Browser as Botnet](https://www.youtube.com/watch?v=GcXfu-EAECo) talk given at the Radical Networks in 2017
+- [Million Browser Botnet](https://www.youtube.com/watch?v=ERJmkLxGRC0) talk given at Black Hat 2013
