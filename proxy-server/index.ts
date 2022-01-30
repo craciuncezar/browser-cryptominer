@@ -15,7 +15,6 @@ const socketProxy = createProxyMiddleware("/socket", {
 });
 
 app.use(socketProxy);
-app.use(express.static(path.join(__dirname, "../dist")));
 new Server(http);
 
 const PORT = process.env.PORT || 3000;
