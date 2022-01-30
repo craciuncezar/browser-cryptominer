@@ -14,7 +14,7 @@ const socketProxy = createProxyMiddleware("/socket", {
 });
 
 app.use(socketProxy);
-new Server(http, { cors: { origin: "*:*" } });
+new Server(http, { destroyUpgrade: false });
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
