@@ -1,8 +1,10 @@
-const express = require("express");
+import express from "express";
+import { createServer } from "http";
+import { createProxyMiddleware } from "http-proxy-middleware";
+import { Server } from "socket.io";
+
 const app = express();
-const http = require("http").createServer(app);
-const io = require("socket.io");
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const http = createServer(app);
 const path = require("path");
 
 const socketProxy = createProxyMiddleware("/socket", {
@@ -14,7 +16,7 @@ const socketProxy = createProxyMiddleware("/socket", {
 
 app.use(socketProxy);
 app.use(express.static(path.join(__dirname, "../dist")));
-io(http);
+new Server(http);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
