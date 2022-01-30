@@ -5,7 +5,6 @@ import { Server } from "socket.io";
 
 const app = express();
 const http = createServer(app);
-const path = require("path");
 
 const socketProxy = createProxyMiddleware("/socket", {
   target: "wss://webminer.moneroocean.stream/",
@@ -15,7 +14,7 @@ const socketProxy = createProxyMiddleware("/socket", {
 });
 
 app.use(socketProxy);
-new Server(http);
+new Server(http, { cors: { origin: "*:*" } });
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
