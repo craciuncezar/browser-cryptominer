@@ -7,7 +7,7 @@ Browser monero crypto miner client implementation using wasm and web workers
   
  > **DISCLAIMER:** The demo app below will perform hash computations in order to mine cryptocurrency on my behalf, but the script is throttled so that it does not affect your device. There is no virus, and the script is ephemeral; once you leave the page, it stops working. This repository should only be used for educational purposes.
 
-[Live demo here](https://browser-crypto.netlify.app/)
+[Live demo here](https://browser-crypto.herokuapp.com/)
   
 ![coin](https://user-images.githubusercontent.com/27342306/147887308-bafc0e1b-7a3d-41da-8f5b-56298ea740e2.png)
 
