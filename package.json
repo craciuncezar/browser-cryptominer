@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "start": "ts-node ./proxy-server/index.ts"
+    "start": "npx ts-node ./proxy-server/index.ts"
   },
   "author": "Craciun Cezar",
   "license": "ISC",
