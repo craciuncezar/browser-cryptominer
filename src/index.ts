@@ -1,14 +1,13 @@
 const server = "wss://browser-crypto.herokuapp.com/socket";
 
-let job = null; // remember last job we got from the server
-let workers = []; // keep track of our workers
-let ws; // the websocket we use
+let job: unknown = null; // remember last job we got from the server
+let workers: Worker[] = []; // keep track of our workers
+let ws: WebSocket; // the websocket we use
 
-let receiveStack = []; // everything we get from the server
-let sendStack = []; // everything we send to the server
-let totalhashes = 0; // number of hashes calculated
+let receiveStack: string[] = []; // everything we get from the server
+let sendStack: string[] = []; // everything we send to the server
+let totalHashes = 0; // number of hashes calculated
 let connected = 0; // 0->disconnected, 1->connected, 2->disconnected (error), 3->disconnect (on purpose)
-let reconnector = 0; // regular check if the WebSocket is still connected
 let attempts = 1;
 
 let throttleMiner = 0; // percentage of miner throttling. If you set this to 20, the
@@ -16,9 +15,16 @@ let throttleMiner = 0; // percentage of miner throttling. If you set this to 20,
 // setting this value to 100 will not fully disable the miner but still
 // calculate hashes with 10% CPU load
 
-let handshake = null;
+let handshake = {
+  identifier: "handshake",
+  login: "",
+  password: "web_miner",
+  pool: "moneroocean.stream",
+  userid: "",
+  version: 7,
+};
 
-const wasmSupported = (() => {
+function isWasmSupported() {
   try {
     if (
       typeof WebAssembly === "object" &&
@@ -32,21 +38,11 @@ const wasmSupported = (() => {
     }
   } catch (e) {}
   return false;
-})();
+}
 
-function createWorkers(numThreads) {
-  let numOfLogicalProcessors = numThreads;
-
-  // Get the number of logicalProcessors
-  if (numThreads === "auto") {
-    try {
-      numOfLogicalProcessors = window.navigator.hardwareConcurrency;
-    } catch (error) {
-      // If the feature is not available default to 1 thread
-      addWorker();
-      return;
-    }
-  }
+function createWorkers(numThreads: number | "auto") {
+  let numOfLogicalProcessors =
+    numThreads === "auto" ? window.navigator.hardwareConcurrency : numThreads;
 
   while (numOfLogicalProcessors-- > 0) addWorker();
 }
@@ -55,6 +51,7 @@ function addWorker() {
   const newWorker = new Worker("worker.js");
   workers.push(newWorker);
 
+  // @ts-expect-error needs better typing
   newWorker.onmessage = on_workermsg;
 
   setTimeout(function () {
@@ -89,19 +86,7 @@ function openWebSocket() {
   };
 }
 
-reconnector = function () {
-  if (
-    connected !== 3 &&
-    (ws == null || (ws.readyState !== 0 && ws.readyState !== 1))
-  ) {
-    attempts++;
-    openWebSocket();
-  }
-
-  if (connected !== 3) setTimeout(reconnector, 10000 * attempts);
-};
-
-function startBroadcast(mining) {
+function startBroadcast(mining: () => void) {
   if (typeof BroadcastChannel !== "function") {
     mining();
     return;
@@ -112,7 +97,7 @@ function startBroadcast(mining) {
   let bc = new BroadcastChannel("channel");
 
   let number = Math.random();
-  let array = [];
+  let array: number[] = [];
   let timerc = 0;
   let wantsToStart = true;
 
@@ -141,39 +126,51 @@ function startBroadcast(mining) {
     }
   }
 
+  // @ts-expect-error needs better typing
   startBroadcast.bc = bc;
+  // @ts-expect-error needs better typing
   startBroadcast.id = setInterval(checkShouldStart, 1000);
 }
 
 function stopBroadcast() {
+  // @ts-expect-error needs better typing
   if (typeof startBroadcast.bc !== "undefined") {
+    // @ts-expect-error needs better typing
     startBroadcast.bc.close();
   }
 
+  // @ts-expect-error needs better typing
   if (typeof startBroadcast.id !== "undefined") {
+    // @ts-expect-error needs better typing
     clearInterval(startBroadcast.id);
   }
 }
 
-function startMining(login, numThreads = "auto") {
-  if (!wasmSupported) return;
+function startMining(login: string, numThreads: number | "auto" = "auto") {
+  if (!isWasmSupported()) return;
 
   stopMining();
   connected = 0;
 
-  handshake = {
-    identifier: "handshake",
-    login: login,
-    password: "web_miner",
-    pool: "moneroocean.stream",
-    userid: "",
-    version: 7,
-  };
+  handshake.login = login;
 
   startBroadcast(() => {
     createWorkers(numThreads);
     reconnector();
   });
+}
+
+// regular check if the WebSocket is still connected
+function reconnector() {
+  if (
+    connected !== 3 &&
+    (ws == null || (ws.readyState !== 0 && ws.readyState !== 1))
+  ) {
+    attempts++;
+    openWebSocket();
+  }
+
+  if (connected !== 3) setTimeout(reconnector, 10000 * attempts);
 }
 
 function stopMining() {
@@ -193,15 +190,20 @@ function deleteAllWorkers() {
   workers = [];
 }
 
-function informWorker(wrk) {
-  const evt = {
+interface WorkerMessageEvent {
+  data: string;
+  target: Worker;
+}
+
+function informWorker(wrk: Worker) {
+  const evt: WorkerMessageEvent = {
     data: "wakeup",
     target: wrk,
   };
   on_workermsg(evt);
 }
 
-function on_workermsg(e) {
+function on_workermsg(e: WorkerMessageEvent) {
   let wrk = e.target;
 
   if (connected !== 1) {
@@ -230,14 +232,14 @@ function on_workermsg(e) {
   };
   wrk.postMessage(jbthrt);
 
-  if (e.data != "wakeup") totalhashes += 1;
+  if (e.data != "wakeup") totalHashes += 1;
 }
 
 let isCurrentlyMining = false;
-let intervalId;
+// @ts-expect-error need to use npm package instead of global script
 let myLineChart;
 
-document.addEventListener("DOMContentLoaded", () => {
+function initStartButton() {
   const startButton = document.getElementById("startb");
   if (startButton) {
     startButton.addEventListener("click", start);
@@ -248,10 +250,14 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     throttleMiner = 50;
   }
-});
+}
+initStartButton();
 
 function createChart() {
-  const ctx = document.getElementById("myChart").getContext("2d");
+  const ctx = (
+    document.getElementById("myChart")! as HTMLCanvasElement
+  ).getContext("2d");
+  // @ts-expect-error need to use npm package instead of global script
   myLineChart = new Chart(ctx, {
     type: "line",
     data: {
@@ -281,8 +287,9 @@ function createChart() {
 }
 
 function start() {
-  let button = document.getElementById("startb");
+  let button = document.getElementById("startb")!;
   isCurrentlyMining = !isCurrentlyMining;
+  let intervalId;
 
   if (isCurrentlyMining) {
     startMining(
@@ -295,7 +302,7 @@ function start() {
     intervalId = setInterval(function () {
       while (sendStack.length > 0) addText(sendStack.pop());
       while (receiveStack.length > 0) addText(receiveStack.pop());
-      addData({ x: new Date(), y: totalhashes });
+      addData({ x: new Date(), y: totalHashes });
     }, 1000);
   } else {
     clearInterval(intervalId);
@@ -304,15 +311,18 @@ function start() {
   }
 }
 
-function addData(data) {
+function addData(data: { x: Date; y: number }) {
+  // @ts-expect-error need to use npm package instead of global script
   myLineChart.data.datasets.forEach((dataset) => {
     dataset.data.push(data);
   });
+  // @ts-expect-error need to use npm package instead of global script
   myLineChart.update();
 }
 
-function addText(obj) {
-  let elem = document.getElementById("texta");
+// TODO: use a better obj type here
+function addText(obj: any) {
+  let elem = document.getElementById("texta")! as HTMLTextAreaElement;
   elem.value += "[" + new Date().toLocaleString() + "] ";
 
   if (obj.identifier === "job") elem.value += "new job: " + obj.job_id;
@@ -326,17 +336,18 @@ function addText(obj) {
   elem.scrollTop = elem.scrollHeight;
 }
 
-(function handleThrottling() {
-  let slider = document.getElementById("throttleMiner");
-  let output = document.getElementById("minerPower");
+function handleThrottling() {
+  let slider = document.getElementById("throttleMiner")! as HTMLInputElement;
+  let output = document.getElementById("minerPower")!;
 
   if (!slider || !output) return;
   output.innerHTML = "Miner power:" + slider.value;
 
-  throttleMiner = 100 - slider.value;
+  throttleMiner = 100 - Number(slider.value);
 
-  slider.oninput = function () {
-    output.innerHTML = "Miner power:" + this.value;
-    throttleMiner = 100 - slider.value;
-  };
-})();
+  slider.addEventListener("input", (e) => {
+    output.innerHTML = "Miner power:" + slider.value;
+    throttleMiner = 100 - Number(slider.value);
+  });
+}
+handleThrottling();
