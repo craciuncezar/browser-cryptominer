@@ -19,7 +19,7 @@
     "rollup-plugin-obfuscator": "^0.2.1",
     "typescript": "4.5.5",
     "ts-node": "10.4.0",
-    "vite": "2.7.10"
+    "vite": "2.9.13"
   },
   "dependencies": {
     "express": "4.17.2",
