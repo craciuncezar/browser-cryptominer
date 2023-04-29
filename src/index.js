@@ -1,4 +1,4 @@
-const server = "wss://browser-crypto.herokuapp.com/socket";
+const server = "wss://webminer.moneroocean.stream";
 
 let job = null; // remember last job we got from the server
 let workers = []; // keep track of our workers
